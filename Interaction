@@ -1,0 +1,85 @@
+import time
+import RPi.GPIO as GPIO
+from rpi_lcd import LCD
+from gpiozero import Servo, Button
+from gpiozero.pins.pigpio import PiGPIOFactory
+from mfrc522 import SimpleMFRC522
+
+# Set up GPIO pins and LCD
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+lcd = LCD(address=0x3f)
+
+# Set up motor and buttons
+factory = PiGPIOFactory()
+servo1 = Servo(13, min_pulse_width=0.5/1000, max_pulse_width=2.5/1000, pin_factory=factory)
+servo2 = Servo(12, min_pulse_width=0.5/1000, max_pulse_width=2.5/1000, pin_factory=factory)
+button1 = Button(16)
+button2 = Button(26)
+
+# Create an instance of the RFID reader
+reader = SimpleMFRC522()
+
+# Function to rotate motor 1 to mid position
+def motor1_to_mid():
+    servo1.mid()
+    time.sleep(1)
+
+# Function to rotate motor 1 to min position
+def motor1_to_min():
+    servo1.min()
+    time.sleep(1)
+
+# Function to rotate motor 2 to mid position
+def motor2_to_mid():
+    servo2.mid()
+    time.sleep(1)
+
+# Function to rotate motor 2 to min position
+def motor2_to_min():
+    servo2.min()
+    time.sleep(1)
+
+# Function to display text on LCD
+def display_lcd(text):
+    lcd.clear()
+    lcd.text(text, 1)
+
+# Main loop
+while True:
+    display_lcd("Welcome to")
+    display_lcd("Swapsage!")
+    time.sleep(2)
+    display_lcd("Please place your")
+    display_lcd("product inside!")
+    motor1_to_mid()
+    button1.wait_for_press()
+    motor1_to_min()
+    button1.wait_for_press()
+    motor1_to_mid()
+    display_lcd("Thank you!")
+    time.sleep(2)
+    display_lcd("Ready to scan")
+
+    try:
+        display_lcd("Scan your tag")
+        time.sleep(2)
+        display_lcd("To unlock your")
+        display_lcd("surprise!")
+        id, data = reader.read()
+        if data.strip() == "Hello":
+            display_lcd("Scan successful")
+            motor2_to_min()
+            button2.wait_for_press()
+            motor2_to_mid()
+            display_lcd("Thank you!")
+            time.sleep(2)
+            display_lcd("Enjoy your")
+            display_lcd("surprise!")
+            time.sleep(2)
+            display_lcd("Keep Swapping")
+            time.sleep(2)
+
+    finally:
+        motor2_to_mid()
+        GPIO.cleanup()
