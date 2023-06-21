@@ -1,0 +1,28 @@
+
+## Usage
+
+The program will display instructions and prompts on the 16x2 LCD display connected to your Raspberry Pi. Here's a brief overview of the functionality:
+
+1. Upon running the program, the LCD will display the welcome message and instructions to place the product inside the system.
+
+2. Use button 1 to control motor 1. Pressing the button will rotate motor 1 to a predefined position. Pressing it again will rotate it back to the original position.
+
+3. After the product is placed inside and button 1 is pressed, the LCD will display a "Thank you!" message.
+
+4. The system is now ready to perform an RFID tag scan. Hold an RFID tag with the text "Hello" near the RFID reader.
+
+5. If the scan is successful, the LCD will display a "Scan successful" message. Motor 2 will then move to a different position.
+
+6. Use button 2 to control motor 2. Pressing the button will rotate motor 2 to a predefined position. Pressing it again will rotate it back to the original position.
+
+7. After the successful tag scan and motor movement, the LCD will display a "Thank you!" message and an "Enjoy your product" message.
+
+8. The system will then loop back to the initial state and continue the process.
+
+## Contributions
+
+Contributions to the Swapsage project are welcome! If you have any suggestions, improvements, or bug fixes, feel free to open an issue or submit a pull request on the GitHub repository.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
